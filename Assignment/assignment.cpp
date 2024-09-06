@@ -2,7 +2,7 @@
 using namespace std;
 void printArray(int array[], int size) {
     if (size <= 0) {
-        cout << "Array is empty.";
+        cout << "Array is empty!";
         return;
     }
     for (int i = 0; i < size; i++) {
