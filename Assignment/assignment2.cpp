@@ -36,8 +36,7 @@ int main(){
         }
         cout << endl;
         }
-    
-
+    cout << "The number of elements in the array : " << (n*n1) << endl;
     cout << "The number of zero in array : " << count << endl;
     if(((n*n1)/4 < count)){
         cout << "This is sparse array";
