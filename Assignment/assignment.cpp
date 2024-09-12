@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
-void printArray(int array[], int size) {
+
+// print array command
+void printArray(int array[], int size) { 
     if (size <= 0) {
         cout << "Array is empty!";
         return;
@@ -11,7 +13,9 @@ void printArray(int array[], int size) {
     cout << endl;
 }
 
-void addStart(int array[],int& size,int element){
+
+// add at start
+void addStart(int array[],int& size,int element){ 
     if (size >= 10){
         cout << "Array is full.";
         return;
@@ -23,7 +27,10 @@ void addStart(int array[],int& size,int element){
     size++;
     printArray(array,size);
 }
-void addEnd(int array[], int &size, int element){
+
+
+// add at end
+void addEnd(int array[], int &size, int element){ 
     if(size >= 10){
         cout << "Array is full.";
         return;
@@ -33,7 +40,11 @@ void addEnd(int array[], int &size, int element){
     printArray(array,size);
 }
 
-void addPosition(int array[], int &size, int element, int position){
+
+// add at position
+void addPosition(int array[], int &size){ 
+    int element; 
+    int position;
     cout << "Enter the element you want to enter : ";
     cin >> element;
     cout << "Enter the position you want to enter the element : ";
@@ -54,7 +65,9 @@ void addPosition(int array[], int &size, int element, int position){
     printArray(array,size);
 }
 
-void delStart(int array[], int &size){
+
+//delete at start
+void delStart(int array[], int &size){ 
     for(int i = 0; i < size-1; i++){
         array[i] = array[i+1];
     }
@@ -62,16 +75,21 @@ void delStart(int array[], int &size){
     printArray(array,size);
 }
 
-void delEnd(int array[],int &size){
+
+// delete at end
+void delEnd(int array[],int &size){ 
     size--;
     printArray(array,size);
 }
 
-void delPosition(int array[], int &size, int position){
+
+// delete at position
+void delPosition(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty";
         return;
     }
+    int position;
     cout << "Enter the position you want to delete : ";
     cin >> position;
     if(position<0 || position>= size){
@@ -85,11 +103,15 @@ void delPosition(int array[], int &size, int position){
     printArray(array,size);
 }
 
-void delRange(int array[], int &size, int start, int end){
+
+// delete range
+void delRange(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
     }
+    int start;
+    int end;
     cout << "Enter the range."<< endl;
     cout << "Enter the start of range : ";
     cin >> start;
@@ -106,11 +128,14 @@ void delRange(int array[], int &size, int start, int end){
     printArray(array,size);
 }
 
-int search(int array[],int &size, int key){
+
+// search
+int search(int array[],int &size){  
     if(size == 0){
         cout << "Array is empty."<< endl;
         return -1;
     }
+    int key;
     cout << "Enter the element you want to search : ";
     cin >> key;
     for (int i = 0; i < size; i++){
@@ -120,10 +145,13 @@ int search(int array[],int &size, int key){
         }
     }
     return -1;
-    // printArray(array,size);
 }
 
-void update(int array[], int &size, int position, int newelement){
+
+// update
+void update(int array[], int &size){ 
+    int position;
+    int newelement;
     cout << "Enter the element you want to replace : ";
     cin >> newelement;
     cout << "Enter the position you want to replace : ";
@@ -133,7 +161,10 @@ void update(int array[], int &size, int position, int newelement){
     printArray(array, size);
 }
 
-void addmultistart(int array[],int &size, int number){
+
+//add multiple element at start
+void addmultistart(int array[],int &size){ 
+    int number;
     cout << "Enter the number of elements you want to enter : ";
     cin >> number;
     if(number + size > 10){
@@ -156,7 +187,10 @@ void addmultistart(int array[],int &size, int number){
     printArray(array,size);
 }
 
-void addmultiEnd(int array[],int &size, int number){
+
+// add multiple at end
+void addmultiEnd(int array[],int &size){ 
+    int number;
     cout << "Enter the number of elements you want to enter : ";
     cin >> number;
     if(number + size > 10){
@@ -176,11 +210,15 @@ void addmultiEnd(int array[],int &size, int number){
     printArray(array,size);
 }
 
-void addMultiPosition(int array[], int &size, int number,int position){
+
+// add multiple at postion
+void addMultiPosition(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
     }
+    int position;
+    int number;
     cout << "Enter the position where you want to enter elements : ";
     cin >> position;
     if(position < 0 || position > size){
@@ -209,11 +247,14 @@ void addMultiPosition(int array[], int &size, int number,int position){
     printArray(array,size);
 }
 
-void delMultiStart(int array[],int &size, int position){
+
+// delete multiple at start
+void delMultiStart(int array[],int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
     }
+    int position;
     cout << "Enter the number of element you want to delete : ";
     cin >> position;
     if(position > 10 || position < 0 || position > size){
@@ -227,11 +268,14 @@ void delMultiStart(int array[],int &size, int position){
     printArray(array,size);
 }
 
-void delMultiEnd(int array[], int &size, int position){
+
+// delete multiple end
+void delMultiEnd(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
     }
+    int position;
     cout << "Enter the number of element you want to delete : ";
     cin >> position;
     if(position > 10 || position < 0 || position > size){
@@ -242,11 +286,15 @@ void delMultiEnd(int array[], int &size, int position){
     printArray(array,size);
 }
 
-void delMultiPosition(int array[], int &size,int number,int position){
+
+// delete multiple at position
+void delMultiPosition(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
     }
+    int position;
+    int number;
     cout << "Enter the position of element you want to delete : ";
     cin >> position;
     if(position > 10 || position < 0 || position > size){
@@ -266,7 +314,9 @@ void delMultiPosition(int array[], int &size,int number,int position){
     printArray(array,size);
 }
 
-void sortAsc(int array[], int &size){
+
+// sort ascending
+void sortAsc(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
@@ -283,7 +333,9 @@ void sortAsc(int array[], int &size){
     printArray(array,size);
 }
 
-void sortDsc(int array[], int &size){
+
+// sort descending
+void sortDsc(int array[], int &size){ 
     if(size == 0){
         cout << "Array is empty.";
         return;
@@ -300,7 +352,9 @@ void sortDsc(int array[], int &size){
     printArray(array,size);
 }
 
-void inserSort(int array[],int &size){
+
+// insertion sort
+void inserSort(int array[],int &size){ 
     for (int i = 1; i < size; i++) {
         int key = array[i];
         int j = i - 1;
@@ -314,17 +368,17 @@ void inserSort(int array[],int &size){
 printArray(array,size);
 }
 
+
 int main(){
     int array[10];
     int size = 0;
     int element;
-    int position;
-    int start;
-    int end;
-    int key;
-    int newelement;
-    int number;
-    cout << "You can choose the following operation that you can perfom on array : " << endl;
+    
+
+
+    while (true)
+    {
+        cout << "You can choose the following operation that you can perfom on array : " << endl;
     cout << "1. Choose 1 to ADD a number at the START of the array. " << endl;
     cout << "2. Choose 2 to ADD a number at the END of the array. " << endl;
     cout << "3. Choose 3 to ADD a number at the ANY POSITION of the array. " << endl;
@@ -345,10 +399,6 @@ int main(){
     cout << "18. Choose 18 to INSERTION SORT the elements in DESCENDING ORDER of the array. "<< endl;
     cout << "19. Choose 19 to PRINT the array. "<< endl;
     cout << "20. Choose 20 to EXIT "<< endl;
-
-
-    while (true)
-    {
         int choose;
         cout << "\n Choose number : ";
         cin >> choose;
@@ -361,36 +411,36 @@ int main(){
             cin >> element;
             addEnd(array,size,element);
         }else if(choose == 3){
-            addPosition(array,size,element,position);
+            addPosition(array,size);
         }else if(choose == 4){
             delStart(array,size);
         }else if(choose == 5){
             delEnd(array,size);
         }else if(choose == 6){
-            delPosition(array,size,position);
+            delPosition(array,size);
         }else if(choose == 7){
-            delRange(array, size, start,end);
+            delRange(array, size);
         }else if(choose == 8){
-            int search1 = search(array,size,key);
+            int search1 = search(array,size);
             if(search1 == -1){
                 cout << "Not found.";
             }else{
                 cout << "Found at " << search1;
             }
         }else if(choose == 9){
-            update(array, size, position,newelement);
+            update(array, size);
         }else if(choose == 10){
-            addmultistart(array,size,number);
+            addmultistart(array,size);
         }else if(choose == 11){
-            addmultiEnd(array,size,number);
+            addmultiEnd(array,size);
         }else if(choose == 12){
-            addMultiPosition(array,size,number,position);
+            addMultiPosition(array,size);
         }else if(choose == 13){
-            delMultiStart(array,size,position);
+            delMultiStart(array,size);
         }else if(choose == 14){
-            delMultiEnd(array,size,position);
+            delMultiEnd(array,size);
         }else if(choose == 15){
-            delMultiPosition(array,size,number,position);
+            delMultiPosition(array,size);
         }else if(choose == 16){
             sortAsc(array,size);
         }else if(choose == 17){
