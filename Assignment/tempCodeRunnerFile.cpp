@@ -1,2 +1,6 @@
-else if(search1 == 0 ){
-                // cout << "Array is empty";}
+rt();
+    // display();
+    // insertAtEnd();
+    // display();
+    // insertAtPosition();
+    // display();
