@@ -167,18 +167,23 @@ void deleteAtPosition(){
     node * temp = head;
     node * prev = NULL;
 
-    while(temp -> info != value){
+    while (temp -> info == value){
+        deleteAtStart();
+        return;
+    }
+    do{
         prev = temp;
         temp = temp->next;
         if(temp == head){
             cout << value << " is not found.";
             return;
         }
+        }while(temp -> info != value);
         prev -> next = temp -> next;
         free(temp);
         display();
     }
-}
+
 int main () {
     int choice;
     while(true){
