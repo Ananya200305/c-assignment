@@ -155,11 +155,6 @@ void deleteAtPosition(){
 
     node * temp = head;
 
-    if(temp -> next == NULL){
-        deleteAtStart();
-        return;
-    }
-
     if(temp -> data == value){
         deleteAtStart();
         return;
@@ -167,14 +162,16 @@ void deleteAtPosition(){
 
     while(temp != NULL && temp -> data != value){
         temp = temp -> next;
+    }
         if(temp == NULL){
             cout << value << " is not found."<<endl;
             return;
         }
-        if(temp -> next != NULL){
-            temp -> next -> prev = temp -> prev;
+        if(temp -> next == NULL){
+            deleteAtEnd();
+            return;
         }
-    }
+    temp -> next -> prev = temp -> prev;
     temp -> prev -> next = temp -> next;
 
     free(temp);
@@ -184,7 +181,7 @@ void deleteAtPosition(){
 int main(){
     int choice;
     while(true){
-        cout << "\nMenu : \n"<< endl;
+        cout << "\nMenu of Doubly Linked List : \n"<< endl;
         cout << "Choose 1 to Insert at Start."<< endl;
         cout << "Choose 2 to Insert at End."<< endl;
         cout << "Choose 3 to Insert at Position." << endl;
@@ -195,25 +192,36 @@ int main(){
         cout << "Choose 8 to EXIT." << endl;
         cout << "\n Choose a number : ";
         cin >> choice;
-        if(choice == 1){
+         switch (choice)
+        {
+        case 1:
             insertAtStart();
-        }else if(choice == 2){
-            insertAtEnd();
-        }else if(choice == 3){
-            insertAfterValue();
-        }else if(choice == 4){
-            deleteAtStart();
-        }else if(choice == 5){
-            deleteAtEnd();
-        }else if(choice == 6){
-            deleteAtPosition();
-        }else if(choice == 7){
-            display();
-        }else if(choice == 8){
-            cout << "Exiting....";
             break;
-        }else{
+        case 2:
+            insertAtEnd();
+            break;
+        case 3:
+            insertAfterValue();
+            break;
+        case 4:
+            deleteAtStart();
+            break;
+        case 5:
+            deleteAtEnd();
+            break;
+        case 6:
+            deleteAtPosition();
+            break;
+        case 7:
+            display();
+            break;
+        case 8:
+            cout << "Exiting....";
+            exit(0);
+            break;
+        default:
             cout << "Invalid Input.";
+            break;
         }
     }
     return 0;

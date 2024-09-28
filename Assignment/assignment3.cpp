@@ -3,7 +3,7 @@ using namespace std;
 
 // Single node
 struct node{ 
-    int info;
+    int data;
     node * next;
 };
 
@@ -11,14 +11,19 @@ node * head = NULL; // head is null
 
 // Display
 void display(){
+
     node*temp = head;
+
     if(temp == NULL){
         cout << "List is Empty.";
+        return;
     }
+
     while(temp != NULL){
-        cout << temp -> info << " " ;
+        cout << temp -> data << " " ;
         temp = temp -> next;
     }
+
     cout << endl;
 }
 
@@ -28,9 +33,10 @@ void insertAtStart(){
     cout << "Enter the value you want to insert at start : ";
     cin >> value;
     node*newnode = (node *) malloc(sizeof(node));
-    newnode-> info = value;
+    newnode-> data = value;
     newnode -> next = head;
     head = newnode;
+    display();
 }
 
 // Insert at End
@@ -44,17 +50,18 @@ void insertAtEnd(){
     cout << "Enter the value you want to insert at end : ";
     cin >> value;
     node*newnode = (node *) malloc(sizeof(node));
-    newnode -> info = value;
+    newnode -> data = value;
+    newnode -> next = NULL;
     node * temp = head;
     while(temp -> next != NULL){
         temp = temp -> next;
     }
     temp -> next = newnode;
-    newnode -> next = NULL;
+    display();
 }
 
 // Insert at position
-void insertAtPosition(){
+void insertAfterPosition(){
     if(head == NULL){
         cout << "List is empty. Inserting at start." << endl;
         insertAtStart();
@@ -67,7 +74,8 @@ void insertAtPosition(){
     cin >> position;
 
     node * temp = head;
-    while(temp != NULL && temp -> info != position){
+
+    while(temp != NULL && temp -> data != position){
         temp = temp -> next;
     }
 
@@ -75,10 +83,11 @@ void insertAtPosition(){
         cout << position << " is not present in the list." << endl;
     }else{
         node * newnode = (node *) malloc(sizeof(node));
-        newnode -> info = value;
+        newnode -> data = value;
         newnode -> next = temp -> next;
         temp -> next = newnode;
     }
+    display();
 }
 
 // Delete at Start
@@ -99,19 +108,23 @@ void deleteAtEnd(){
         cout << "List is empty.";
         return;
     }
+
+    // one node
     if(head-> next == NULL){
         free(head);
         head = NULL;
         display();
         return;
     }
+
+
     node * temp = head;
-    node * prev = NULL;
+    node * temp1 = NULL;
     while(temp -> next != NULL){
-        prev = temp;
+        temp1 = temp;
         temp = temp -> next;
     }
-    prev -> next = NULL;
+    temp1 -> next = NULL;
     free(temp);
     display();
 }
@@ -127,7 +140,7 @@ void deleteAtPosition(){
     cin >> value;
 
     node * temp = head;
-    node * prev = NULL;
+    node * temp1 = NULL;
 
     // If there is only one node
     if(temp -> next == NULL){
@@ -138,21 +151,21 @@ void deleteAtPosition(){
     }
 
     // If node is at start
-    if(temp != NULL && temp -> info == value){
+    if(temp != NULL && temp -> data == value){
         head = temp -> next;
         free(temp);
         display();
         return;
     }
 
-    while(temp != NULL && temp -> info != value){
-        prev = temp;
+    while(temp != NULL && temp -> data != value){
+        temp1 = temp;
         temp = temp -> next;
     }
     if(temp == NULL){
         cout << value << " not found." << endl;;
     }else{
-        prev -> next = temp -> next;
+        temp1 -> next = temp -> next;
         free(temp);
     }
     display();
@@ -186,13 +199,13 @@ void reverseList(){
         return;
     }
     node * prev = NULL;
-    node * temp = head;
+    node * curr = head;
     node * next = NULL;
-    while(temp != NULL){
-        next = temp -> next;
-        temp -> next = prev;
-        prev = temp ;
-        temp = next;
+    while(curr != NULL){
+        next = curr -> next;
+        curr -> next = prev;
+        prev = curr ;
+        curr = next;
     }
     head = prev;
     display();
@@ -200,7 +213,7 @@ void reverseList(){
 int main(){
     int choice;
     while(true){
-        cout << "\nMenu : \n"<< endl;
+        cout << "\nMenu of Singly Linked list : \n"<< endl;
         cout << "Choose 1 to Insert at Start."<< endl;
         cout << "Choose 2 to Insert at End."<< endl;
         cout << "Choose 3 to Insert at Position." << endl;
@@ -213,32 +226,42 @@ int main(){
         cout << "Choose 10 to EXIT." << endl;
         cout << "\n Choose a number : ";
         cin >> choice;
-        if(choice == 1){
+        switch (choice)
+        {
+        case 1:
             insertAtStart();
-            display();
-        }else if(choice == 2){
-            insertAtEnd();
-            display();
-        }else if(choice == 3){
-            insertAtPosition();
-            display();
-        }else if(choice == 4){
-            deleteAtStart();
-        }else if(choice == 5){
-            deleteAtEnd();
-        }else if(choice == 6){
-            deleteAtPosition();
-        }else if(choice == 7){
-            numberOfNodes();
-        }else if(choice == 8){
-            reverseList();
-        }else if(choice == 9){
-            display();
-        }else if(choice == 10){
-            cout << "Exiting....";
             break;
-        }else{
+        case 2:
+            insertAtEnd();
+            break;
+        case 3:
+            insertAfterPosition();
+            break;
+        case 4:
+            deleteAtStart();
+            break;
+        case 5:
+            deleteAtEnd();
+            break;
+        case 6:
+            deleteAtPosition();
+            break;
+        case 7:
+            numberOfNodes();
+            break;
+        case 8:
+            reverseList();
+            break;
+        case 9:
+            display();
+            break;
+        case 10:
+            cout << "Exiting....";
+            exit(0);
+            break;
+        default:
             cout << "Invalid Input.";
+            break;
         }
     }
     return 0;

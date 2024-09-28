@@ -3,7 +3,7 @@ using namespace std;
 
 // Structure of a Node
 struct node{
-    int info;
+    int data;
     node * next;
 };
 
@@ -12,6 +12,7 @@ node * head = NULL;
 
 // display
 void display(){
+    // if head is null
     if(head == NULL){
         cout << "Circular Linked List is empty." << endl;
         return;
@@ -21,7 +22,7 @@ void display(){
 
     // print
     do{
-        cout << temp -> info << " ";
+        cout << temp -> data << " ";
         temp = temp -> next;
     }while(temp != head);
 
@@ -36,7 +37,7 @@ void insertAtStart(){
 
     // new node
     node * newnode = (node *) malloc(sizeof(node));
-    newnode -> info = value;
+    newnode -> data = value;
     
     if(head == NULL){
         head = newnode;
@@ -61,7 +62,7 @@ void insertAtEnd(){
 
     // new node
     node * newnode = (node *) malloc(sizeof(node));
-    newnode -> info = value;
+    newnode -> data = value;
 
     if(head == NULL){
         head = newnode;
@@ -79,7 +80,7 @@ void insertAtEnd(){
 }
 
 // instertion at a position
-void insertAtPosition(){
+void insertAfterValue(){
     int value, position;
     cout << "Enter the value you want to insert : ";
     cin >> value;
@@ -87,7 +88,7 @@ void insertAtPosition(){
     cin >> position;
 
     node * newnode = (node * ) malloc(sizeof(node));
-    newnode -> info = value;
+    newnode -> data = value;
 
     if(head == NULL){
         cout << "List is empty." << endl;
@@ -97,7 +98,7 @@ void insertAtPosition(){
 
     node * temp = head;
 
-    while(temp -> info != position){
+    while(temp -> data != position){
         temp = temp -> next;
         if(temp == head){
             cout << position << " is not present." << endl;
@@ -167,7 +168,7 @@ void deleteAtPosition(){
     node * temp = head;
     node * prev = NULL;
 
-    while (temp -> info == value){
+    while (temp -> data == value){
         deleteAtStart();
         return;
     }
@@ -178,7 +179,7 @@ void deleteAtPosition(){
             cout << value << " is not found.";
             return;
         }
-        }while(temp -> info != value);
+        }while(temp -> data != value);
         prev -> next = temp -> next;
         free(temp);
         display();
@@ -187,7 +188,7 @@ void deleteAtPosition(){
 int main () {
     int choice;
     while(true){
-        cout << "\nMenu : \n"<< endl;
+        cout << "\nMenu of Circular Linked List : \n"<< endl;
         cout << "Choose 1 to Insert at Start."<< endl;
         cout << "Choose 2 to Insert at End."<< endl;
         cout << "Choose 3 to Insert at Position." << endl;
@@ -198,25 +199,36 @@ int main () {
         cout << "Choose 8 to EXIT." << endl;
         cout << "\n Choose a number : ";
         cin >> choice;
-        if(choice == 1){
+         switch (choice)
+        {
+        case 1:
             insertAtStart();
-        }else if(choice == 2){
-            insertAtEnd();
-        }else if(choice == 3){
-            insertAtPosition();
-        }else if(choice == 4){
-            deleteAtStart();
-        }else if(choice == 5){
-            deleteAtEnd();
-        }else if(choice == 6){
-            deleteAtPosition();
-        }else if(choice == 7){
-            display();
-        }else if(choice == 8){
-            cout << "Exiting....";
             break;
-        }else{
+        case 2:
+            insertAtEnd();
+            break;
+        case 3:
+            insertAfterValue();
+            break;
+        case 4:
+            deleteAtStart();
+            break;
+        case 5:
+            deleteAtEnd();
+            break;
+        case 6:
+            deleteAtPosition();
+            break;
+        case 7:
+            display();
+            break;
+        case 8:
+            cout << "Exiting....";
+            exit(0);
+            break;
+        default:
             cout << "Invalid Input.";
+            break;
         }
     }
     return 0;

@@ -42,15 +42,11 @@ void insertAtStart(){
         return;
     }
 
-    while(temp -> next != head){
-        temp = temp -> next;
-    }
-    temp -> next = newnode;
-    newnode -> prev = temp;
     newnode -> next = head;
+    newnode -> prev = head -> prev;
+    head -> prev -> next = newnode;
     head -> prev = newnode;
     head = newnode;
-
     display();
 }
 
@@ -69,13 +65,13 @@ void insertAtEnd(){
         return;
     }
 
-    while(temp -> next != head){
-        temp = temp -> next;
-    }
-    temp -> next = newnode;
-    newnode -> prev = temp;
     newnode -> next = head;
+    newnode -> prev = head -> prev;
+    head -> prev -> next = newnode;
     head -> prev = newnode;
+    
+
+
     display();
 }
 
@@ -104,7 +100,7 @@ void insertAfterValue(){
             return;
         }
     }
-    if(temp -> next == head){
+    if(temp -> data == value){
         temp -> next = newnode;
         newnode -> prev = temp;
         newnode -> next = head;
@@ -112,10 +108,11 @@ void insertAfterValue(){
         display();
         return;
     }
+
     newnode -> next = temp -> next ;
-    temp -> next = newnode;
     newnode -> prev = temp;
     temp -> next -> prev = newnode;
+    temp -> next = newnode;
     display();
 }
 
@@ -134,15 +131,9 @@ void deleteAtStart(){
         return;
     }
 
-    node * last = head;
-
-    while(last -> next != head){
-        last = last -> next;
-    }
+    head -> prev -> next = head -> next;
+    head -> next -> prev = head -> prev;
     head = head -> next;
-    last -> next = head;
-    head -> prev = last;
-
     free(temp);
     
     display();
@@ -163,14 +154,12 @@ void deleteAtEnd(){
         return;
     }
 
-    while(temp -> next != head){
-        temp = temp -> next;
-    }
+    node * last = head -> prev;
+    last -> prev -> next= head;
+    head -> prev = last -> prev;
 
-    temp -> prev -> next = head;
-    head -> prev = temp -> prev;
 
-    free(temp);
+    free(last);
     display();
 }
 
@@ -207,7 +196,7 @@ void deleteAtPosition(){
 int main(){
     int choice;
     while(true){
-        cout << "\nMenu : \n"<< endl;
+        cout << "\nMenu of Doubly Circular Linked List : \n"<< endl;
         cout << "Choose 1 to Insert at Start."<< endl;
         cout << "Choose 2 to Insert at End."<< endl;
         cout << "Choose 3 to Insert at Position." << endl;
@@ -218,25 +207,36 @@ int main(){
         cout << "Choose 8 to EXIT." << endl;
         cout << "\n Choose a number : ";
         cin >> choice;
-        if(choice == 1){
+         switch (choice)
+        {
+        case 1:
             insertAtStart();
-        }else if(choice == 2){
-            insertAtEnd();
-        }else if(choice == 3){
-            insertAfterValue();
-        }else if(choice == 4){
-            deleteAtStart();
-        }else if(choice == 5){
-            deleteAtEnd();
-        }else if(choice == 6){
-            deleteAtPosition();
-        }else if(choice == 7){
-            display();
-        }else if(choice == 8){
-            cout << "Exiting....";
             break;
-        }else{
+        case 2:
+            insertAtEnd();
+            break;
+        case 3:
+            insertAfterValue();
+            break;
+        case 4:
+            deleteAtStart();
+            break;
+        case 5:
+            deleteAtEnd();
+            break;
+        case 6:
+            deleteAtPosition();
+            break;
+        case 7:
+            display();
+            break;
+        case 8:
+            cout << "Exiting....";
+            exit(0);
+            break;
+        default:
             cout << "Invalid Input.";
+            break;
         }
     }
     return 0;
