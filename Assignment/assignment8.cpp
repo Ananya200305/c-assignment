@@ -25,14 +25,15 @@ void display(){
 }
 
 void push(){
-    int value;
-    cout << "Enter the value you want to push : ";
-    cin >> value;
     if(isFull()){
-        cout << "Stack OverFlown. " << value << " cannot be pushed."<<endl;
+        cout << "Stack OverFlown. Nothing can be pushed."<<endl;
         display();
         return;
     }
+    int value;
+    cout << "Enter the value you want to push : ";
+    cin >> value;
+    
 
     stack[++TOS] = value;
     cout << value << " is pushed in stack." << endl;
@@ -41,7 +42,7 @@ void push(){
 
 void pop(){
     if(isEmpty()){
-        cout << "Stack Underflown. " << stack[TOS] << " cannot be popped.";
+        cout << "Stack Underflown. No element can be popped.";
         return;
     }
 
@@ -52,7 +53,7 @@ void pop(){
 
 int peep(){
     if(isEmpty()){
-        cout << "Stack is empty." << endl;
+        cout << "Stack is empty. Nothing to peep" << endl;
         return -1;
     }
     cout << "Top of Stack : " << stack[TOS] << endl;
