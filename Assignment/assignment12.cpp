@@ -16,7 +16,7 @@ bool isQueueEmpty(){
 
 void displayQueue(){
     if(isQueueEmpty()){
-        cout << "Stack is Empty." << endl;
+        cout << "Queue is Empty." << endl;
         return;
     }
 
@@ -130,8 +130,8 @@ int main(){
             bool inStackMenu = true;
             while(inStackMenu){
             cout << "\nMenu :\n" << endl; 
-            cout << "1. ENQUEUE" << endl;
-            cout << "2. DEQUEUE" << endl;
+            cout << "1. PUSH" << endl;
+            cout << "2. POP" << endl;
             cout << "3. DISPLAY" << endl;
             cout << "4. GO TO MAIN MENU" << endl;
             cout << "Choose : ";
@@ -139,13 +139,13 @@ int main(){
             switch (choice1)
             {
             case 1:
-            enqueueQueue();
+            pushStack();
             break;
             case 2:
-            dequeueQueue();
+            popStack();
             break;
             case 3:
-            displayQueue();
+            displayStack();
             break;
             case 4:
             inStackMenu = false;
@@ -162,8 +162,8 @@ int main(){
             bool inQueueMenu = true;
             while(inQueueMenu){
             cout << "\nMenu :\n" << endl; 
-            cout << "1. PUSH" << endl;
-            cout << "2. POP" << endl;
+            cout << "1. ENQUEUE" << endl;
+            cout << "2. DEQUEUE" << endl;
             cout << "3. DISPLAY" << endl;
             cout << "4. GO TO MAIN MENU" << endl;
             cout << "Choose : ";
@@ -171,13 +171,13 @@ int main(){
             switch (choice2)
             {
             case 1:
-            pushStack();
+            enqueueQueue();
             break;
             case 2:
-            popStack();
+            dequeueQueue();
             break;
             case 3:
-            displayStack();
+            displayQueue();
             break;
             case 4:
             inQueueMenu = false;

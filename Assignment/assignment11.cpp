@@ -34,6 +34,7 @@ void enqueueArray(){
     cin >> value;
     if(isArrayFull()){
         cout << "Queue is Full. " << value << " cannot be enqueued." <<endl;
+        displayArray();
         return;
     }
     if(isArrayEmpty()){
@@ -58,6 +59,16 @@ void dequeueArray(){
         arrayFront = (arrayFront + 1) % MAX;
     }
     displayArray();
+}
+
+
+int peekArray(){
+    if(isArrayEmpty()){
+        cout << "Queue is empty. Nothing to peek." << endl;
+        return -1;
+    }
+    cout << "Top of Queue : " << arrayQueue[arrayFront] << endl;
+    return arrayQueue[arrayFront];
 }
 
 
@@ -128,6 +139,15 @@ void dequeueList(){
     listdisplay();
 }
 
+int peeklist(){
+    if(isListEmpty()){
+        cout << "Queue is empty. Nothing to peek." << endl;
+        return -1;
+    }
+    cout << "Top of Queue : " << listFront -> data << endl;
+    return listFront -> data;
+}
+
 int main(){
     int choice;
     while(true){
@@ -144,10 +164,11 @@ int main(){
             bool inArrayMenu = true;
             while(inArrayMenu){
             cout << "\nMenu :\n" << endl; 
-            cout << "1. ENQUEUE" << endl;
-            cout << "2. DEQUEUE" << endl;
-            cout << "3. DISPLAY" << endl;
-            cout << "4. GO TO MAIN MENU" << endl;
+            cout << "1. ENQUEUE IN ARRAY" << endl;
+            cout << "2. DEQUEUE IN ARRAY" << endl;
+            cout << "3. PEEK(ARRAY)" << endl;
+            cout << "4. DISPLAY QUEUE(ARRAY)" << endl;
+            cout << "5. GO TO MAIN MENU" << endl;
             cout << "Choose : ";
             cin >> choice1;
             switch (choice1)
@@ -159,9 +180,12 @@ int main(){
             dequeueArray();
             break;
             case 3:
-            displayArray();
+            peekArray();
             break;
             case 4:
+            displayArray();
+            break;
+            case 5:
             inArrayMenu = false;
             break;
             default:
@@ -176,10 +200,11 @@ int main(){
             bool inListMenu = true;
             while(inListMenu){
             cout << "\nMenu :\n" << endl; 
-            cout << "1. ENQUEUE" << endl;
-            cout << "2. DEQUEUE" << endl;
-            cout << "3. DISPLAY" << endl;
-            cout << "4. GO TO MAIN MENU" << endl;
+            cout << "1. ENQUEUE IN LIST" << endl;
+            cout << "2. DEQUEUE IN LIST" << endl;
+            cout << "3. PEEK(LIST)" << endl;
+            cout << "4. DISPLAY QUEUE(LIST)" << endl;
+            cout << "5. GO TO MAIN MENU" << endl;
             cout << "Choose : ";
             cin >> choice2;
             switch (choice2)
@@ -191,9 +216,12 @@ int main(){
             dequeueList();
             break;
             case 3:
-            listdisplay();
+            peeklist();
             break;
             case 4:
+            listdisplay();
+            break;
+            case 5:
             inListMenu = false;
             break;
             default:

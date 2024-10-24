@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#define MAX 5
+#define MAX 10
 
 int queue[MAX];
 int front = -1;
@@ -59,14 +59,24 @@ void dequeue(){
     display();
 }
 
+int peek(){
+    if(isEmpty()){
+        cout << "Queue is empty. Nothing to peek." << endl;
+        return -1;
+    }
+    cout << "Top of Queue : " << queue[front] << endl;
+    return queue[front];
+}
+
 int main(){
     int choice;
     while(true){
         cout << "\nMenu :\n" << endl; 
         cout << "1. ENQUEUE" << endl;
         cout << "2. DEQUEUE" << endl;
-        cout << "3. DISPLAY" << endl;
-        cout << "4. EXIT" << endl;
+        cout << "3. PEEK" << endl;
+        cout << "4. DISPLAY" << endl;
+        cout << "5. EXIT" << endl;
         cout << "Choose : ";
         cin >> choice;
         switch (choice)
@@ -78,9 +88,12 @@ int main(){
             dequeue();
             break;
         case 3:
-            display();
+            peek();
             break;
         case 4:
+            display();
+            break;
+        case 5:
             cout << "Exiting....." << endl;
             exit(0);
         default:

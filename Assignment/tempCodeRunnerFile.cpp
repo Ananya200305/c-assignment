@@ -16,7 +16,7 @@ bool isFull(){
 
 void display(){
     if(isEmpty()){
-        cout << "Stack is empty." << endl;
+        cout << "Stack Underflown. No element can be popped." << endl;
         return;
     }
     for(int i = TOS; i >= 0; i--){
