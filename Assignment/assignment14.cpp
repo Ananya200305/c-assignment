@@ -30,7 +30,40 @@ treenode * insert(treenode * root, int data){
     return root;
 }
 
-#define MAX 100
+treenode * inordersucc(treenode * root){
+    root = root -> right;
+    while(root != NULL && root -> left != NULL){
+        root = root -> left;
+    }
+    return root;
+}
+
+treenode * del(treenode * root,int key){
+    if(root == NULL){
+        return root;
+    }
+
+    if(root -> data < key){
+        root -> right = del(root -> right,key);
+    }else if(root -> data > key){
+        root -> left = del(root -> left, key);
+    }else{
+        if(root -> left == NULL){
+            treenode * temp = root -> right;
+            free(root);
+            return temp;
+        }else if(root -> right == NULL){
+            treenode * temp = root -> left;
+            free(root);
+            return temp;
+        }
+
+        treenode * temp = inordersucc(root);
+        root -> data = temp -> data;
+        root -> right = del(root -> right, temp -> data);
+    }
+    return root ;
+}
 
 treenode * stack[MAX];
 int TOS = -1;
@@ -130,10 +163,11 @@ int main(){
     while(true){
         cout << "\nBinary Search Tree Operations\n";
         cout << "1. Insert\n";
-        cout << "2. Inorder Traversal\n";
-        cout << "3. Preorder Traversal\n";
-        cout << "4. Postorder Traversal\n";
-        cout << "5. Exit\n";
+        cout << "2. Delete\n";
+        cout << "3. Inorder Traversal\n";
+        cout << "4. Preorder Traversal\n";
+        cout << "5. Postorder Traversal\n";
+        cout << "6. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
         switch(choice){
@@ -144,18 +178,24 @@ int main(){
                 cout << data << " is being inserted.";
                 break;
             case 2:
+                cout << "Enter the value to delete: ";
+                cin >> key;
+                root = del(root, key);
+                cout << key << " has been deleted (if it existed).\n";
+                break;
+            case 3:
                 cout << "Inorder Traversal : ";
                 inorder(root);
                 break;
-            case 3:
+            case 4:
                 cout << "Preorder Traversal : ";
                 preorder(root);
                 break;
-            case 4:
+            case 5:
                 cout << "Postorder Traversal : ";
                 postorder(root);
                 break;
-            case 5:
+            case 6:
                 cout << "Exiting...."<< endl;
                 exit(0);
             default:

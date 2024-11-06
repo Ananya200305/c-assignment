@@ -1,188 +1,227 @@
 #include <iostream>
 using namespace std;
 
-#define MAX 100
-
-int adjMatrix[MAX][MAX] = {0};
-int visited[MAX] = {0};
-
-struct Queue{
-    int queue[MAX];
-    int front;
-    int rear;
-
-    Queue(){
-        front = -1;
-        rear = -1;
-    }
-
-    bool isEmpty(){
-        return front  == -1;
-    }
-
-    bool isFull(){
-        return rear == MAX -1;
-    }
-
-    void enqueue(int value){
-        if(isFull()){
-            cout << "Queue is Full" << endl;
-            return;
-        }
-
-        if(isEmpty()){
-            front = 0;
-        }
-        queue[++rear] = value;
-    }
-
-    int dequeue(){
-        if(isEmpty()){
-            cout << "Queue is Empty" << endl;
-            exit(0);
-        }
-
-        int value = queue[front];
-        if(front == rear){
-            front = -1;
-            rear = -1;
-        }else{
-            front++;
-        }
-        return value;
-    }
+struct Node{
+    int data;
+    Node * left;
+    Node * right;
 };
 
-void BFS(int numNode , int start){
-    Queue q;
-    
-    for(int i = 0 ; i < numNode; i++){
-        visited[i] = 0;
-    }
-
-    q.enqueue(start);
-    visited[start] = 1;
-
-    cout << "BFS traversal starting from node " << start << ": ";
-    while (!q.isEmpty()) {
-        int currentNode = q.dequeue();
-        cout << currentNode << " ";
-
-        for (int i = 0; i < numNode; i++) {
-            if (adjMatrix[currentNode][i] && !visited[i]) {
-                q.enqueue(i);
-                visited[i] = 1;
-            }
-        }
-    }
-    cout << endl;
+Node * createNode(int data){
+    Node * newNode = (Node *) malloc(sizeof(Node));
+    newNode -> data = data;
+    newNode -> left = NULL;
+    newNode -> right = NULL;
+    return newNode;
 }
 
-struct Stack {
-    int stack[MAX];
-    int top;
-
-    Stack() {
-        top = -1;
+Node * insert(Node * root, int data){
+    if(root == NULL){
+        return createNode(data);
     }
 
-    bool isEmpty() {
-        return top == -1;
+    if(data > root -> data){
+        root -> right = insert(root -> right, data);
+    }else if(data < root -> data){
+        root -> left = insert(root -> left,data);
     }
-
-    bool isFull() {
-        return top == MAX - 1;
-    }
-
-    void push(int value) {
-        if (isFull()) {
-            cout << "Stack is Full" << endl;
-            return;
-        }
-        stack[++top] = value;
-    }
-
-    int pop() {
-        if (isEmpty()) {
-            cout << "Stack is Empty" << endl;
-            exit(0);
-        }
-        return stack[top--];
-    }
-};
-
-void DFS(int numNode, int start) {
-    Stack s;
-
-    // Reset the visited array
-    for (int i = 0; i < numNode; i++) {
-        visited[i] = 0;
-    }
-
-    s.push(start);
-    visited[start] = 1;
-
-    cout << "DFS traversal starting from node " << start << ": ";
-    while (!s.isEmpty()) {
-        int currentNode = s.pop();
-        cout << currentNode << " ";
-
-        // Visit adjacent nodes
-        for (int i = numNode - 1; i >= 0; i--) { // Go in reverse order for correct DFS
-            if (adjMatrix[currentNode][i] && !visited[i]) {
-                s.push(i);
-                visited[i] = 1;
-            }
-        }
-    }
-    cout << endl;
+    return root;
 }
 
-int  main(){
-    int choice, numNode, start;
+bool search(Node * root, int key){
+    if(root == NULL){
+        return false;
+    }
+
+    if(root -> data == key){
+        return true;
+    }else if( root -> data < key){
+        return search(root -> right, key);
+    }else{
+        return search(root -> left, key);
+    }
+}
+
+Node * inodersucc(Node * root){ // smallest node of right subtree
+    root = root -> right;
+    while(root != NULL && root -> left != NULL){
+        root = root -> left;
+    }
+    return root;
+}
+
+Node * inorderpred(Node * root){ //largest node of left subtree
+    root = root -> left;
+    while(root != NULL && root -> right != NULL){
+        root = root -> right;
+    }
+    return root;
+}
+
+Node * delsuc(Node * root, int key){
+    if(root == NULL){
+        return NULL;
+    }
+
+    if(root -> data > key){
+        root -> left = delsuc(root -> left,key);
+    }else if(root -> data < key){
+        root -> right = delsuc(root -> right, key);
+    }else{
+        if(root -> left == NULL){
+            Node * temp = root -> right;
+            free(root);
+            return temp;
+        }else if(root -> right == NULL){
+            Node * temp = root -> left;
+            free(root);
+            return temp;
+        }
+
+        Node * temp = inodersucc(root);
+        root -> data = temp -> data;
+        root -> right = delsuc(root -> right, temp -> data);
+    }
+    return root;
+}
+
+Node * delpred(Node * root, int key){
+    if(root == NULL){
+        return NULL;
+    }
+
+    if(root -> data > key){
+        root -> left = delpred(root -> left,key);
+    }else if(root -> data < key){
+        root -> right = delpred(root -> right,key);
+    }else{
+        if(root -> left == NULL){
+            Node * temp = root -> right;
+            free(root);
+            return temp;
+        }else if(root -> right == NULL){
+            Node * temp = root -> left;
+            free(root);
+            return temp;
+        }
+
+        Node * temp = inorderpred(root);
+        root -> data = temp -> data;
+        root -> left = delpred(root -> left, temp -> data);
+    }
+    return root;
+}
+
+//left root right
+void inorder(Node * root){
+    if(root != NULL){
+        inorder(root -> left);
+        cout << root -> data << " ";
+        inorder(root -> right);
+    }
+}
+
+//root left right
+void preorder(Node * root){
+    if(root != NULL){
+        cout << root -> data << " ";
+        preorder(root -> left);
+        preorder(root -> right);
+    }
+}
+
+//left right root
+void postorder(Node * root){
+    if(root != NULL){
+        postorder(root -> left);
+        postorder(root -> right);
+        cout << root -> data << " ";
+    }
+}
+
+int main(){
+    int data;
+    Node * root = NULL;
+    int choice;
+    int key;
+    int type;
 
     while(true){
-        cout << "\nMenu : \n" << endl;
-        cout << "1. INPUT GRAPH" << endl;
-        cout << "2. PERFORM BFS" << endl;
-        cout << "3. PERFORM DFS" << endl;
-        cout << "4. EXIT" << endl;
+        cout << "\n MENU : \n" << endl;
+        cout << "1. INSERT" << endl;
+        cout << "2. SEARCH" << endl;
+        cout << "3. DELETE" << endl;
+        cout << "4. INORDER TRAVERSAL" << endl;
+        cout << "5. PREORDER TRAVERSAL" << endl;
+        cout << "6. POSTORDER TRAVERSAL" << endl;
+        cout << "7. EXIT" << endl;
         cout << "\n Enter Choice : ";
         cin >> choice;
-        switch (choice){
-            case 1:
-                cout << "Enter the number of nodes : ";
-                cin >> numNode;
-
-                cout << "Enter Adjacency Matrix : "<<endl;
-                for(int i = 0; i < numNode; i++){
-                    for(int j = 0; j < numNode; j++){
-                        cout << "Enter the value of " << i << " " << j << " : ";
-                        cin >> adjMatrix[i][j];
-                        if(adjMatrix[i][j] != 0 && adjMatrix[i][j] != 1){
-                            cout << "Invalid input! Only 0 or 1 allowed. Exiting...\n";
-                            exit(0);
-                        }
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter the value you want to insert : ";
+            cin >> data;
+            root = insert(root,data);
+            cout << data << " is being inserted." << endl;
+            break;
+        case 2:
+            cout << "Enter the value you want to search : ";
+            cin >> key;
+            if(search(root,key)){
+                cout << key << " is found." << endl;
+            }else{
+                cout << key << " is not found." << endl;
+            }
+            break;
+        case 3:
+                cout << "1. Inorder Sucessor" << endl;
+                cout << "2. Inorder Predecessor" << endl;
+                cout << "Enter the type of Deletion : ";
+                cin >> type;
+                if(type == 1){
+                    cout << "Enter the value to delete: ";
+                    cin >> key;
+                    root = delsuc(root, key);
+                    if(root == NULL){
+                        cout << "Tree is empty. Cannot delete " << key << "." << endl;
+                        break;
                     }
+                    cout << key << " has been deleted.";
+                    break;
+                }else if(type == 2){
+                    cout << "Enter the value to delete: ";
+                    cin >> key;
+                    root = delpred(root, key);
+                    if(root == NULL){
+                        cout << "Tree is empty. Cannot delete " << key << "." << endl;
+                        break;
+                    }
+                    cout << key << " has been deleted.";
+                    break;
+                }else{
+                    cout << "Invalid."<< endl;
+                    break;
                 }
+                break;
+        case 4:
+            cout << "Inorder : ";
+            inorder(root);
             break;
-            case 2:
-                cout << "Enter the starting node : ";
-                cin >> start;
-                BFS(numNode, start);
+        case 5:
+            cout << "Preorder : ";
+            preorder(root);
             break;
-            case 3:
-                cout << "Enter the starting node : ";
-                cin >> start;
-                DFS(numNode, start);
+        case 6:
+            cout << "Postorder : ";
+            postorder(root);
             break;
-            case 4:
-                cout << "Exiting....." << endl;
-                exit(0);
-            break;
+        case 7:
+            cout << "Exiting...."<< endl;
+            exit(0);
         default:
-            cout << "Invalid Input." << endl;
-        break;
+            cout << "Invalid Input "<< endl;
+            break;
         }
     }
     return 0;

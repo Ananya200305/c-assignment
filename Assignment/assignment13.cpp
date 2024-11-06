@@ -1,48 +1,48 @@
 #include <iostream>
 using namespace std;
 
-struct node{
+struct Node{
     int data;
-    node * left;
-    node * right;
+    Node * left;
+    Node * right;
 };
 
-node * createNode(int data){
-    node * newNode = (node *) malloc(sizeof(node));
+Node * createNode(int data){
+    Node * newNode = (Node *) malloc(sizeof(Node));
     newNode -> data = data;
     newNode -> left = NULL;
     newNode -> right = NULL;
     return newNode;
 }
 
-struct node * insert(node * root, int data){
+Node * insert(Node * root, int data){
     if(root == NULL){
         return createNode(data);
     }
 
-    if(data < root -> data){
-        root -> left = insert(root -> left , data);
-    }else if(data > root -> data){
+    if(data > root -> data){
         root -> right = insert(root -> right, data);
+    }else if(data < root -> data){
+        root -> left = insert(root -> left,data);
     }
     return root;
 }
 
-bool search(node * root, int key){
+bool search(Node * root, int key){
     if(root == NULL){
         return false;
     }
 
     if(root -> data == key){
         return true;
-    }else if(root -> data < key){
+    }else if( root -> data < key){
         return search(root -> right, key);
     }else{
         return search(root -> left, key);
     }
 }
 
-node * inordersucc(node * root){
+Node * inodersucc(Node * root){ // smallest node of right subtree
     root = root -> right;
     while(root != NULL && root -> left != NULL){
         root = root -> left;
@@ -50,35 +50,76 @@ node * inordersucc(node * root){
     return root;
 }
 
-node * del(node * root,int key){
+Node * inorderpred(Node * root){ //largest node of left subtree
+    root = root -> left;
+    while(root != NULL && root -> right != NULL){
+        root = root -> right;
+    }
+    return root;
+}
+
+Node * delsuc(Node * root, int key){
     if(root == NULL){
-        return root;
+        return NULL;
     }
 
-    if(root -> data < key){
-        root -> right = del(root -> right,key);
-    }else if(root -> data > key){
-        root -> left = del(root -> left, key);
+    if(root -> data > key){
+        root -> left = delsuc(root -> left,key);
+    }else if(root -> data < key){
+        root -> right = delsuc(root -> right, key);
     }else{
-        if(root -> left == NULL){
-            node * temp = root -> right;
+        if(root -> right == NULL && root -> left == NULL){
+            free(root);
+            return NULL;
+        }else if(root -> left == NULL){
+            Node * temp = root -> right;
             free(root);
             return temp;
         }else if(root -> right == NULL){
-            node * temp = root -> left;
+            Node * temp = root -> left;
             free(root);
             return temp;
         }
 
-        node * temp = inordersucc(root);
+        Node * temp = inodersucc(root);
         root -> data = temp -> data;
-        root -> right = del(root -> right, temp -> data);
+        root -> right = delsuc(root -> right, temp -> data);
     }
-    return root ;
+    return root;
 }
 
-// Left Root Right
-void inorder(node * root){
+Node * delpred(Node * root, int key){
+    if(root == NULL){
+        return NULL;
+    }
+
+    if(root -> data > key){
+        root -> left = delpred(root -> left,key);
+    }else if(root -> data < key){
+        root -> right = delpred(root -> right,key);
+    }else{
+        if(root -> right == NULL && root -> left == NULL){
+            free(root);
+            return NULL;
+        }else if(root -> left == NULL){
+            Node * temp = root -> right;
+            free(root);
+            return temp;
+        }else if(root -> right == NULL){
+            Node * temp = root -> left;
+            free(root);
+            return temp;
+        }
+
+        Node * temp = inorderpred(root);
+        root -> data = temp -> data;
+        root -> left = delpred(root -> left, temp -> data);
+    }
+    return root;
+}
+
+//left root right
+void inorder(Node * root){
     if(root != NULL){
         inorder(root -> left);
         cout << root -> data << " ";
@@ -86,8 +127,8 @@ void inorder(node * root){
     }
 }
 
-// Root Left Right
-void preorder(node * root){
+//root left right
+void preorder(Node * root){
     if(root != NULL){
         cout << root -> data << " ";
         preorder(root -> left);
@@ -95,8 +136,8 @@ void preorder(node * root){
     }
 }
 
-// Left Right Root
-void postorder(node * root){
+//left right root
+void postorder(Node * root){
     if(root != NULL){
         postorder(root -> left);
         postorder(root -> right);
@@ -106,62 +147,90 @@ void postorder(node * root){
 
 int main(){
     int data;
-    node * root = NULL;
-    int choice, key;
+    Node * root = NULL;
+    int choice;
+    int key;
+    int type;
 
     while(true){
-        cout << "\nBinary Search Tree Operations\n";
-        cout << "1. Insert\n";
-        cout << "2. Delete\n";
-        cout << "3. Search\n";
-        cout << "4. Inorder Traversal\n";
-        cout << "5. Preorder Traversal\n";
-        cout << "6. Postorder Traversal\n";
-        cout << "7. Exit\n";
-        cout << "Enter your choice: ";
+        cout << "\n MENU : \n" << endl;
+        cout << "1. INSERT" << endl;
+        cout << "2. SEARCH" << endl;
+        cout << "3. DELETE" << endl;
+        cout << "4. INORDER TRAVERSAL" << endl;
+        cout << "5. PREORDER TRAVERSAL" << endl;
+        cout << "6. POSTORDER TRAVERSAL" << endl;
+        cout << "7. EXIT" << endl;
+        cout << "\n Enter Choice : ";
         cin >> choice;
-        switch(choice){
-            case 1:
-                cout << "Enter the value you want to insert : ";
-                cin >> data;
-                root = insert(root,data);
-                cout << data << " is being inserted.";
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter the value you want to insert : ";
+            cin >> data;
+            root = insert(root,data);
+            cout << data << " is being inserted." << endl;
+            break;
+        case 2:
+            cout << "Enter the value you want to search : ";
+            cin >> key;
+            if(search(root,key)){
+                cout << key << " is found." << endl;
+            }else{
+                cout << key << " is not found." << endl;
+            }
+            break;
+        case 3:
+            if(root == NULL){
+                cout << "Tree is empty. Cannot delete." << endl;
                 break;
-            case 2:
+            }
+            cout << "1. Inorder Sucessor" << endl;
+            cout << "2. Inorder Predecessor" << endl;
+            cout << "Enter the type of Deletion : ";
+            cin >> type;
+            if(type == 1){
                 cout << "Enter the value to delete: ";
                 cin >> key;
-                root = del(root, key);
-                cout << key << " has been deleted (if it existed).\n";
-                break;
-            case 3:
-                cout << "Enter the value to search: ";
-                cin >> key;
-                if (search(root, key)) {
-                    cout << key << " found in the tree." << endl;
-                } else {
-                    cout << key << " not found in the tree." << endl;
+                if(search(root,key)){
+                    root = delsuc(root, key);
+                    cout << key << " has been deleted." << endl;
+                }else{
+                    cout << key << " did not exist." << endl;
                 }
+            }else if(type == 2){
+                cout << "Enter the value to delete: ";
+                cin >> key;
+                if(search(root,key)){
+                    root = delpred(root, key);
+                    cout << key << " has been deleted." << endl;
+                }else{
+                    cout << key << " did not exist." << endl;
+                }
+            }else{
+                cout << "Invalid."<< endl;
                 break;
-            case 4:
-                cout << "Inorder Traversal : ";
-                inorder(root);
-                break;
-            case 5:
-                cout << "Preorder Traversal : ";
-                preorder(root);
-                break;
-            case 6:
-                cout << "Postorder Traversal : ";
-                postorder(root);
-                break;
-            case 7:
-                cout << "Exiting...."<< endl;
-                exit(0);
-            default:
-                cout << "Invalid Input." << endl;
-                break;
+            }
+            break;
+        case 4:
+            cout << "Inorder : ";
+            inorder(root);
+            break;
+        case 5:
+            cout << "Preorder : ";
+            preorder(root);
+            break;
+        case 6:
+            cout << "Postorder : ";
+            postorder(root);
+            break;
+        case 7:
+            cout << "Exiting...."<< endl;
+            exit(0);
+        default:
+            cout << "Invalid Input "<< endl;
+            break;
         }
-        
     }
     return 0;
 }
